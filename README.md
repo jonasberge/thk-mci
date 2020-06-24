@@ -1,4 +1,4 @@
-## [`vonas.github.io/thk-mci`](https://vonas.github.io/thk-mci/)
+### [vonas.github.io/thk-mci](https://vonas.github.io/thk-mci/)
 Funktionaler Prototyp für das Praktikum in Mensch-Computer Interaktion an der TH Köln
 
 ### Webseite lokal ausführen
