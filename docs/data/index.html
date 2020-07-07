@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+<head>
+
+  <meta charset="utf-8">
+  <title>Demo Daten verwalten</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ page.description | default: site.description }}">
+
+  <script src="/vendor/sql-js/sql-wasm.js"></script>
+
+</head>
+<body>
+
+  <script src="/assets/scripts/util.js"></script>
+  <script src="/assets/scripts/db.js"></script>
+
+  <script>
+
+    get_db().then(function (db) {
+
+      db.exec(`INSERT INTO professor (id, name) VALUES (${
+        Math.round(Math.random() * 10000)
+      }, 'Idkman')`)
+
+      const stmt = db.prepare('SELECT * FROM professor');
+
+      result = [];
+      while (stmt.step())
+        result.push(stmt.getAsObject());
+
+      console.log('professors:', result);
+
+      persist_db();
+
+
+    }, function (reason) {
+      console.error('Failed to load database:', reason);
+    });
+
+  </script>
+
+</body>
+</html>
