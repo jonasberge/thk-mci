@@ -2,9 +2,9 @@ const config = {
   localStorage_key: 'data.sqlite',
   localStorage_tsKey: 'data.sqlite.ts',
   paths: {
-    vendor: '/vendor/sql-js',
-    model: '/assets/sqlite/model.sql',
-    data: '/assets/sqlite/data.sql'
+    vendor: resolvePath('/vendor/sql-js'),
+    model: resolvePath('/assets/sqlite/model.sql'),
+    data: resolvePath('/assets/sqlite/data.sql')
   }
 };
 

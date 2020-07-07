@@ -26,6 +26,17 @@ function toBinString(arr) {
 }
 
 
+function resolvePath(path) {
+  const root = '/thk-mci';
+  const domains = [ 'vonas.github.io', 'abla.ge' ];
+
+  if (!domains.includes(location.hostname))
+    return path;
+
+  return root + '/' + path.replace(/^\/+/g, '');
+}
+
+
 // fetches a ressource's header.
 function fetchHeader(url, name) {
   return new Promise(function (resolve, reject) {
