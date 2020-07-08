@@ -1,4 +1,4 @@
- 
+
 /*
 Colortemplate
 */
@@ -19,8 +19,8 @@ body, html {
     height: 100%;
   }
   .hero-image {
-    background-image: url("../images/Campus Gummersbach.jpg");
-  
+    background-image: url("assets/images/Campus Gummersbach.jpg");
+
 
   background-position: center;
   background-repeat: no-repeat;
