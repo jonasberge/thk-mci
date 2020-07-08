@@ -286,12 +286,12 @@
     t = secondsToTime(s);
 
     if (t.h > 0)
-      result += t.h + ' Stunden';
+      result += t.h + ' Stunde' + (t.h == 1 ? '' : 'n');
 
     if (t.m > 0) {
       if (t.h > 0)
         result += ' und';
-      result += ' ' + t.m + ' Minuten';
+      result += ' ' + t.m + ' Minute' + (t.m == 1 ? '' : 'n');
     }
 
     return result;
