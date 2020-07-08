@@ -246,20 +246,13 @@
   <!--table------------------------------------------------------------------------------>
   <div class="column" >
     <div class="table-container">
-      <table class="table is-hoverable is-fullwidth">
+      <table id="table-transponder" class="table is-hoverable is-fullwidth">
         <thead class="is-primary">
           <tr>
             <td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>Dauer</td><td>Status</td><td>Icon</td>
           </tr>
         </thead>
         <tbody>
-          <tr><td>0.401</td><td>Konen</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>0.402</td><td>Konen</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
         </tbody>
       </table>
     </div>
@@ -268,7 +261,93 @@
 
 
 
+<script src="../vendor/sql-js/sql-wasm.js"></script>
+<script src="../assets/scripts/util.js"></script>
+<script src="../assets/scripts/db.js"></script>
+<script src="../assets/scripts/queries.js"></script>
+<script>
 
+// populate the table above.
+(function () {
 
+  const table = document.querySelector('#table-transponder');
 
+  const create_td_with = function (value) {
+    const td = document.createElement('td');
+    td.innerText = value;
+    return td;
+  };
 
+  const formatSeconds = function (s) {
+    result = '';
+    if (!s)
+      return result;
+
+    t = secondsToTime(s);
+
+    if (t.h > 0)
+      result += t.h + ' Stunden';
+
+    if (t.m > 0) {
+      if (t.h > 0)
+        result += ' und';
+      result += ' ' + t.m + ' Minuten';
+    }
+
+    return result;
+  }
+
+  query_transponders().then(function (result) {
+    console.log(table, result);
+
+    tds = [];
+
+    for (room of result) {
+      const rental_time = formatSeconds(room.diff_seconds);
+
+      const tr = document.createElement('tr');
+      const items = {
+        room_name: room.room_name,
+        responsible_professor: room.responsible_professor,
+        transponder_list: room.transponder_list,
+        rental_time: rental_time,
+        is_rented: room.is_rented ? 'Rot' : 'Grün',
+        icon: '<icon>'
+      }
+
+      for (key in items) {
+        if (items.hasOwnProperty(key)) {
+          const td = document.createElement('td');
+          td.innerText = items[key];
+          tr.appendChild(td);
+          if (key == 'rental_time') {
+            td.dataset.seconds = room.diff_seconds;
+            tds.push(td);
+          }
+        }
+      }
+
+      table.appendChild(tr);
+    }
+
+    const timeout_seconds = 1;
+    const timeout_function = function () {
+      for (td of tds) {
+        seconds = parseInt(td.dataset.seconds) + timeout_seconds;
+        td.innerText = formatSeconds(seconds);
+        td.dataset.seconds = seconds;
+      }
+    };
+
+    (function create_timeout() {
+      setTimeout(function () {
+        timeout_function();
+        create_timeout();
+      }, timeout_seconds * 1000);
+    })();
+
+  });
+
+})();
+
+</script>
