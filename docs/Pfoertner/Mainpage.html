@@ -156,25 +156,29 @@
                   Wählen Sie einen Transponder für den <br>Raum: <strong>0.000</strong> aus der Liste aus.<br>
                 </div>
                 <section class="section pb-0 pt-4">
-                  <div class="level mt-4">
-                    <div class="dropdown left-level"  id="ddm_transponder_verleih" >
-                      <div class="dropdown-trigger" >
-                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" id="ddb_transponder_verleih" >
-                          Transponder wählen...
-                        </button>
-                      </div>
-                      <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                        <div class="dropdown-content" id="dropdown-item">
-                          <a href="#" class="dropdown-item">Transponder 1</a>
-                          <a href="#" class="dropdown-item">Transponder 2</a>
-                          <a href="#" class="dropdown-item">Transponder 3</a>
-                          <a href="#" class="dropdown-item">Transponder 4</a>
+                  <div class="columns">
+                    <div class="column is-three-fifth">
+                      <div class="control">
+                        <div class="select">
+                          <select>
+                            <option>Transponder wählen...</option>
+                            <option>Transponder 1</option>
+                            <option>Transponder 2</option>
+                            <option>Transponder 3</option>
+                            <option>Transponder 4</option>
+                            <option>Transponder 5</option>
+                          </select>
                         </div>
                       </div>
                     </div>
-                
-                    <button class="button is-link right-level">MultiCa Prüfen</button>
+                    
+                    <div class="column is-two-fifth">
+                      <div class="level">
+                        <button class="button is-link level-item">MultiCa prüfen</button>
+                      </div>
+                    </div>
                   </div>
+
                   <section class="section py-0 px-0">
                     <div class="level">
                       <button class="button is-link level-item">Unterschrift einlesen</button>
@@ -210,20 +214,6 @@
       button_close_transponder_verleih.onclick = function(){
         modal_transponder_verleih.style.display = 'none';
       }
-
-      //Dropdown Menu
-      var dropdown_menu_transponder_verleih = document.getElementById('ddm_transponder_verleih')
-      var dropdown_button_transponder_verleih = document.getElementById('ddb_transponder_verleih')
-      var dropdown_close_button_transponder_verleih = document.getElementById('dropdown-item')
-
-      dropdown_button_transponder_verleih.onclick = function(){
-        dropdown_menu_transponder_verleih.classList.add('is-active');
-      }
-
-      dropdown_close_button_transponder_verleih.onclick = function(){
-        dropdown_menu_transponder_verleih.classList.remove('is-active');
-      }
-
     </script>
   </section>
 
