@@ -3,13 +3,50 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/docs/styles.css">
-  <title>Student Login</title>
+  <!--<link rel="stylesheet" href="/docs/styles.css">
+  <title>Student Login</title>-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+  <title>Pfoertner Login</title>
 </head>
 <body>
 
-<h1>Student Login</h1>
-<a href="Mainpage.html">Login</a>
+  <div class="columns" style="margin-top: 10%;">
+    <div class="column"></div>
+    <div class="column is-one-third">
+        <p class="title is-1">Trans.ponder</p>
+        <p class="subtitle">Anmeldung</p>
+        <br>
+        <div class="field">
+            <label class="label">CampusID</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="e.g asmith">
+            </div>
+        </div>
+          
+        <div class="field">
+            <label class="label">Passwort</label>
+            <div class="control">
+                <input class="input" type="email" placeholder="Passwort">
+            </div>
+        </div>
+
+        <div class="field mt-5">
+            <div class="field is-grouped">
+                <div class="control">
+                    <a href="Mainpage.html">
+                        <button class="button is-link">Login</button>
+                    </a>
+                </div>
+                <div class="control">
+                  <a href="../index.html">
+                    <button class="button is-link is-light">Abbruch</button>
+                  </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column"></div>
+  </div>
 
 </body>
 </html>
