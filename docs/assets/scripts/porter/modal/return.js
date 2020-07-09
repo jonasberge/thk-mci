@@ -1,5 +1,11 @@
 (function () {
 
+  const are_dates_same_day = function (first, second) {
+    return first.getFullYear() === second.getFullYear() &&
+      first.getMonth() === second.getMonth() &&
+      first.getDate() === second.getDate();
+  }
+
   let selected_transponder_id = null;
 
   const button_modal_transponder_rückgabe = document.getElementById('btn_trans_rückgabe')
@@ -108,14 +114,20 @@
       elements.current_time.innerText = format_time(new Date());
 
       if (transponder.borrow_time) {
+        const today = new Date();
         const borrowed_at = new Date(transponder.borrow_time);
         const borrow_date = borrowed_at.toLocaleDateString();
         const borrow_time = format_time(borrowed_at);
 
         const one_day = 24 * 60 * 60 * 1000;
-        const day_difference = Math.round(Math.abs((new Date() - borrowed_at) / one_day))
+        const day_difference = Math.round(Math.abs((today - borrowed_at) / one_day))
 
-        let text = borrow_time + ' am ' + borrow_date;
+        let text = borrow_time
+
+        if (are_dates_same_day(borrowed_at, today))
+          text += ', Heute';
+        else text += ' am ' + borrow_date;
+
         if (day_difference == 1)
           text = 'Gestern um ' + borrow_time;
         else if (day_difference == 2)
