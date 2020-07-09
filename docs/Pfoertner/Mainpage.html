@@ -178,10 +178,10 @@
                   </div>
                 </div>
                 <br>
-                <div class="level" id="btn_close_trans_rückgabe">
-                  <button class="button is-link is-outlined ">Abbrechen</button>
+                <div class="level">
+                  <button id="btn_close_trans_abbrechen" class="button is-link is-outlined ">Abbrechen</button>
                   &nbsp;&nbsp;&nbsp;&nbsp;
-                  <button class="button is-link level-item">Rückgabe Bestätigen</button>
+                  <button id="btn_close_trans_rückgabe" class="button is-link level-item">Rückgabe Bestätigen</button>
                 </div>
               </section>
             </div>
@@ -356,11 +356,17 @@
   const modal_transponder_rückgabe = document.getElementById('mdl_trans_rückgabe')
   const button_close_transponder_rückgabe = document.getElementById('btn_close_trans_rückgabe')
   const button_transponder_check = document.getElementById('btn_trans_rückgabe_prüfen')
+  const button_cancel_rückgabe = document.getElementById('btn_close_trans_abbrechen')
+
+  button_cancel_rückgabe.onclick = function () {
+    modal_transponder_rückgabe.style.display = 'none';
+  };
 
   button_modal_transponder_rückgabe.onclick = function(){
     modal_transponder_rückgabe.style.display = 'block';
 
     input_element.focus();
+    button_close_transponder_rückgabe.disabled='true';
   };
 
   button_close_transponder_rückgabe.onclick = function(){
@@ -378,11 +384,8 @@
         WHERE id = ?
 
       `, [ selected_transponder_id ]).then(function (result) {
-        console.log('test-result:', result);
         // TODO: open a modal that informs the user about the operation being successful.
-        load_transponders().then(function () {
-          console.log('Transponders reloaded');
-        }, load_transponders_errorFunc);
+        load_transponders().then(function () {}, load_transponders_errorFunc);
       }, function (reason) {
         console.error('Could not return transponder', reason);
       });
@@ -435,6 +438,8 @@
       if (!result || result.length == 0)
         return reset_modal();
 
+      button_close_transponder_rückgabe.disabled='';
+
       transponder = result[0];
       selected_transponder_id = transponder.id;
       console.log(selected_transponder_id, transponder.id);
@@ -484,6 +489,7 @@
         elements[key].innerText = '';
     selected_transponder_id = null;
     room_title.innerText = 'Raum';
+    button_close_transponder_rückgabe.disabled='true';
   };
 
   const format_time = function (date) {
