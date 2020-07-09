@@ -57,6 +57,7 @@
     }
 
     hide_modal();
+    show_success_modal();
   };
 
   const input_element = document.querySelector('#input-transponder-number');
@@ -70,16 +71,18 @@
     on_time: result_container.querySelector('.info-on-time')
   };
 
+  const modal_return_success_modal = document.querySelector('#mdl_trans_rückgabe_bestätigt');
+
+  const show_success_modal = function () {
+    modal_return_success_modal.style.display = 'block';
+  };
+
   // submit input field on typing
   input_element.addEventListener("keyup", function(event) {
     if (input_element.value.length == 0)
-      reset_modal();
-    else button_transponder_check.click();
-  });
+      return reset_modal();
 
-  // load the data of the transponder.
-  button_transponder_check.onclick = function(){
-
+    // load the data of the transponder.
     const input = input_element.value;
     if (input.length == 0) return;
 
@@ -147,7 +150,7 @@
 
     });
 
-  };
+  });
 
   const convert_input_to_transponder_id = function (input) {
     return parseInt(input.replace(/[\.,]+/g, ''));

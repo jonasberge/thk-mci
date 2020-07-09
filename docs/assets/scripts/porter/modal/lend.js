@@ -71,6 +71,11 @@
     button_check_multica.disabled = 'true';
   });
 
+  const modal_lend_success = document.querySelector('#mdl_trans_verleih_bestätigt');
+  const show_success_modal = function () {
+    modal_lend_success.style.display = 'block';
+  };
+
   let last_input = null;
   input_room_number.addEventListener("keyup", function(event) {
 
@@ -152,6 +157,7 @@
   button_confirm_transponder_verleih.onclick = function(){
     transponder_id = button_confirm_preconditions.selected_transponder;
     hide_modal();
+    show_success_modal();
 
     if (transponder_id) {
       console.log(transponder_id);
