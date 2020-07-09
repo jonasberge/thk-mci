@@ -31,10 +31,7 @@
     select_sidebar_entry();
   };
 
-  button_cancel_rückgabe.onclick = function () {
-    modal_transponder_rückgabe.style.display = 'none';
-  };
-
+  button_cancel_rückgabe.onclick = function () { hide_modal(); };
   button_modal_transponder_rückgabe.addEventListener('click', function () { show_modal(); });
 
   button_close_transponder_rückgabe.onclick = function(){
