@@ -80,8 +80,7 @@ const load_transponders = (function () {
             responsible_professor: room.responsible_professor,
             transponder_list: room.transponder_list,
             rental_time: rental_time,
-            is_rented: room.is_rented ? 'Rot' : 'Grün',
-            icon: '<icon>'
+            is_rented: room.is_rented ? 'Rot' : 'Grün'
           }
 
           for (key in items) {
