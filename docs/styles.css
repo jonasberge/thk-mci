@@ -45,3 +45,7 @@ form{
 #signature-button:disabled {
   cursor: default;
 }
+
+.italic {
+  font-style: italic;
+}

@@ -39,11 +39,24 @@ const load_transponders = (function () {
 
     return new Promise(function (resolve, reject) {
 
+      const delimiter = '|||';
+      const span = document.createElement('span');
+      span.classList.add('grey', 'italic');
+      span.innerHTML = delimiter;
+
+      const outerHTML = span.outerHTML.replace(/'/g, "''");;
+      const [ left_span, right_span ] = outerHTML.split(delimiter);
+
       return execute_db_query(`
 
            SELECT room.name as room_name,
                   professor.name as responsible_professor,
-                  group_concat(room_transponder.transponder_id, ', ') as transponder_list,
+                  group_concat(
+                    CASE WHEN transponder.borrow_time IS NULL
+                      THEN room_transponder.transponder_id
+                      ELSE '${ left_span }' || room_transponder.transponder_id || '${ right_span }'
+                    END
+                  , ', ') as transponder_list,
                   strftime('%s', datetime('now', 'localtime')) - strftime('%s', MIN(transponder.borrow_time)) as diff_seconds,
                   transponder.borrow_time IS NOT NULL as is_rented
              FROM room
@@ -74,7 +87,7 @@ const load_transponders = (function () {
           for (key in items) {
             if (items.hasOwnProperty(key)) {
               const td = document.createElement('td');
-              td.innerText = items[key];
+              td.innerHTML = items[key];
               tr.appendChild(td);
               if (key == 'rental_time') {
                 td.dataset.seconds = room.diff_seconds;
