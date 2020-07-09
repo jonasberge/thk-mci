@@ -13,7 +13,7 @@
 <body>
   <div class="columns">
     <div class="column">
-      <a href="#" class="button is-link is-large" style="margin-right: 15%;" id="btn_reset_db">Reset Datenbank</a>
+      <button class="button is-danger is-small" style="margin: 1em; position: absolute; bottom: 0; left: 0" id="btn_reset_db">Lokale Datenbank zurücksetzen</button>
     </div>
   </div>
 
@@ -47,6 +47,46 @@
 
   <div class="column"></div>
 </div>
+
+
+<script src="../vendor/sql-js/sql-wasm.js"></script>
+<script src="../assets/scripts/util.js"></script>
+<script src="../assets/scripts/db.js"></script>
+
+<script>
+
+  (function () {
+
+    const reset_loading = function () {
+      btn_reset_db.classList.remove('is-success');
+      btn_reset_db.classList.add('is-danger');
+    };
+
+    const btn_reset_db = document.querySelector('#btn_reset_db');
+    let reset_timeout = null;
+
+    btn_reset_db.onclick = function () {
+      clearTimeout(reset_timeout);
+      reset_loading();
+      btn_reset_db.classList.add('is-loading');
+      btn_reset_db.disabled = 'true';
+
+      reset_db().then(function () {
+        console.log('Reset successful');
+        btn_reset_db.classList.remove('is-loading', 'is-danger');
+        btn_reset_db.classList.add('is-success');
+        btn_reset_db.disabled = '';
+
+        reset_timeout = setTimeout(reset_loading, 1600);
+      }, function (reason) {
+        console.error('Could not reset database', reason);
+        btn_reset_db.classList.remove('is-loading');
+      });
+    };
+
+  })();
+
+</script>
 
 </body>
 </html>
