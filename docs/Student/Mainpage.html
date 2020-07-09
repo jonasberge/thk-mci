@@ -1,15 +1,114 @@
 <!DOCTYPE html>
+</body>
+</html>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../styles.css">
-  <title>Pfoertner Login</title>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Mainpage</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body>
 
-<h1>Pförtner Login</h1>
-<a href="Mainpage.html">Login</a>
+<!--nav----------------------------------------------------------------->
+  <nav class="navbar is-primary is-link">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#" style="font-weight: bold;">
+          Trans.ponder
+        </a>
+        <span class="navbar-burger burger" data-target="navMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </div>
+      <div id="navMenu" class="navbar-menu">
+        <div class="navbar-end">
+          <a href="#" class="navbar-item is-active">Home</a>
+          <a href="#" class="navbar-item" id="btn_modal_info">Hilfe</a>
+          <!--<a href="#" class="navbar-item"><strong>BE</strong>rechtigungsende</a>-->
+          <hr class="navbar-divider">
+          <a href="Login.html" class="navbar-item">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <script type="text/javascript">
+    (function(){
+      var burger = document.querySelector('.burger');
+      var nav = document.querySelector('#'+burger.dataset.target);
+
+      burger.addEventListener('click', function(){
+        burger.classList.toggle('is-active');
+        nav.classList.toggle('is-active');
+      });
+    })();
+  </script>
+
+<section>
+  <div>
+    <div class="modal" id="mdl_verleih_rückgabe">
+      <div class="modal-background"></div>
+      <div class="modal-content" style="margin-top: 5%;">
+        <article class="message is-large is-link">
+          <div class="message-header">
+            <p>Transponder ausleihen und zurückgeben</p>
+          </div>
+          <div class="message-body">
+            <section class="container">
+              <h1 class="title"><strong>Rückgabe:</strong></h1>
+              <p>Transponder können lediglich beim Pförtner ausgeliehen und zurückgegeben werden.<br><br></p>
+              <h1 class="title">Legende:</h1>
+              <p style="font-size: medium;">
+                <strong>Raum</strong>: Raumnummer<br>
+                <strong>Dozent</strong>: Dozent, welcher für diesen Raum verantwortlich ist.<br>
+                <strong>BE</strong>rechtigungsende: An diesem Datum endet ihre Berechtigung, einen Transponder für diesen Raum auszuleihen.<br>
+              </p>
+              <br><br>
+              <div class="level" id="btn_modal_info_close">
+                <button class="button is-link level-item">Verstanden</button>
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var button_modal = document.getElementById('btn_modal_info')
+    var modal = document.getElementById('mdl_verleih_rückgabe')
+    var button_close = document.getElementById('btn_modal_info_close')
+
+    button_modal.onclick = function(){
+      modal.style.display = 'block';
+    }
+    button_close.onclick = function(){
+      modal.style.display = 'none'
+    }
+  </script>
+</section>
+
+<!--List-------------------------------------------------------------->
+  <div class="column" >
+    <div class="table-container">
+      <table class="table is-fullwidth">
+        <thead class="is-primary has-text-weight-bold">
+          <tr>
+            <td>Raum</td><td>Dozent</td><td class="has-text-left">BE</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>0.401</td><td>Konen</td><td>31.08.20</td></tr>
+          <tr><td>0.402</td><td>Konen</td><td>31.08.20</td></tr>
+          <tr><td>Raum</td><td>Dozent</td><td>31.08.20</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
