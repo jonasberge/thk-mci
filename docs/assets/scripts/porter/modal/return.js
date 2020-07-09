@@ -38,8 +38,6 @@
   button_close_transponder_rückgabe.onclick = function(){
     modal_transponder_rückgabe.style.display = 'none';
 
-    // console.log(selected_transponder_id);
-
     // return the transponder.
     if (selected_transponder_id) {
       execute_db_query(`
@@ -107,7 +105,6 @@
 
       transponder = result[0];
       selected_transponder_id = transponder.id;
-      console.log(selected_transponder_id, transponder.id);
 
       if (transponder.room_count > 1)
         room_title.innerText = 'Räume';

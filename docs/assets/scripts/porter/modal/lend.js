@@ -160,7 +160,6 @@
     show_success_modal();
 
     if (transponder_id) {
-      console.log(transponder_id);
       execute_db_query(`
 
         UPDATE transponder
