@@ -301,17 +301,46 @@
         </div>
       </div>
     </div>
+
+    <div>
+      <div class="modal pt-6" id="mdl_trans_verleih_bestätigt">
+        <div class="modal-background"></div>
+        <div class="modal-content mt-6">
+          <article class="message is-large is-link">
+            <div class="message-header">
+              <p>Bestätigt</p>
+            </div>
+            <div class="message-body">
+              <section class="container">
+                Der Transponder wurde erfolgreich verliehen.
+                <br><br>
+                <div class="level">
+                  <button class="button is-link level-item" id="btn_bestätigung_verleih_close">OK</button>
+                </div>
+              </section>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript">
       //Modal itself
       var button_modal_transponder_verleih = document.getElementById('btn_trans_verleih')
       var modal_transponder_verleih = document.getElementById('mdl_trans_verleih')
       var button_close_transponder_verleih = document.getElementById('btn_close_trans_verleih')
+      var modal_bestätigung_verleih = document.getElementById('mdl_trans_verleih_bestätigt')
+      var button_bestätigung_verleih_close = document.getElementById('btn_bestätigung_verleih_close')
 
       button_modal_transponder_verleih.onclick = function(){
         modal_transponder_verleih.style.display = 'block';
       }
       button_close_transponder_verleih.onclick = function(){
         modal_transponder_verleih.style.display = 'none';
+        modal_bestätigung_verleih.style.display = 'block';
+      }
+      button_bestätigung_verleih_close.onclick = function(){
+        modal_bestätigung_verleih.style.display = 'none';
       }
     </script>
   </section>
