@@ -1,13 +1,6 @@
 (function () {
-  all_modals = [];
-  backgrounds = document.querySelectorAll('div.modal-background');
-
-  for (modal_background of backgrounds) {
-    all_modals.push(modal_background.closest('.modal'));
-
+  for (modal_background of document.querySelectorAll('div.modal-background'))
     modal_background.addEventListener('click', function () {
-      for (modal of all_modals)
-        modal.style.display = 'none';
+      g_close_modal();
     });
-  }
 })();

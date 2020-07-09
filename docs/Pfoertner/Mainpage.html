@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Porter Mainpage</title>
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="stylesheet" href="../vendor/bulma-0.9.0/bulma.min.css">
     <link rel="stylesheet" href="../styles.css">
   </head>
@@ -252,20 +253,18 @@
             <div class="message-body">
               <section class="container">
                 <div class="section py-0">
-                  Geben Sie eine Raumnummer ein und wählen Sie einen Transponder.<br><br>Raum: <input class="input" placeholder="0.000"><br>
+                  Wählen sie einen Transponder.<br>
+                  Sie können diese auch nach Räumen filtern.<br><br>
+                  Raum: <input id="input-room-number" class="input"
+                    placeholder="Nach Raum filtern, zum Beispiel 0.401"><br>
                 </div>
                 <section class="section pb-0 pt-4">
                   <div class="columns">
                     <div class="column is-three-fifth">
                       <div class="control">
                         <div class="select">
-                          <select>
-                            <option>Transponder wählen...</option>
-                            <option>Transponder 1</option>
-                            <option>Transponder 2</option>
-                            <option>Transponder 3</option>
-                            <option>Transponder 4</option>
-                            <option>Transponder 5</option>
+                          <select class="grey" id="select-transponder-number">
+                            <option id="select-option-meta" value="0" disabled="true" selected="true">Transponder wählen...</option>
                           </select>
                         </div>
                       </div>
@@ -273,23 +272,36 @@
 
                     <div class="column is-two-fifth">
                       <div class="level">
-                        <button class="button is-link level-item">MultiCa prüfen</button>
+                        <button id="button-check-multica" class="button is-link level-item">MultiCa prüfen</button>
                       </div>
                     </div>
                   </div>
 
                   <section class="section py-0 px-0">
                     <div class="level">
-                      <button class="button is-link level-item">Unterschrift einlesen</button>
+                      <button id="signature-button" class="button is-link level-item">
+                        <span id="signature-icon" class="icon is-small has-text-success" style="display:none; padding-right: 6px">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span id="signature-message">Unterschrift einlesen</span>
+                      </button>
+                    </div>
+                    <div id="info-scanner-container" class="level" style="display: none">
+                      <p style="text-align: center; word-wrap: none">
+                        <span id="scanner-icon" class="icon is-small" style="display: none; padding-right: 6px">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span id="info-scanner-message"></span>
+                      </p>
                     </div>
                     <div class="level">
                       <div class="left-level"></div>
                       <div class="right-level">
-                        <section class="section level-item pb-0 pr-0" id="btn_close_trans_verleih">
+                        <section class="section level-item pb-0 pr-0" style="padding-top: 0">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <button class="button is-link is-outlined is-medium">Abbrechen</button>
+                          <button id="btn_close_trans_verleih" class="button is-link is-outlined is-medium">Abbrechen</button>
                           &nbsp;
-                          <button class="button is-link is-medium">Bestätigen</button>
+                          <button id="btn_confirm_trans_verleih" class="button is-link is-medium">Bestätigen</button>
                         </section>
                       </div>
                     </div>
@@ -349,25 +361,31 @@
   <!--table------------------------------------------------------------------------------>
   <div class="column" >
     <div class="table-container">
-      <table id="table-transponder" class="table is-hoverable is-fullwidth">
+      <table class="table is-hoverable is-fullwidth">
         <thead class="is-primary">
           <tr>
             <td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>Dauer</td><td>Status</td><td>Icon</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="table-transponder">
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<script src="../assets/scripts/common.js"></script>
-
 <script src="../vendor/sql-js/sql-wasm.js"></script>
 <script src="../assets/scripts/util.js"></script>
 <script src="../assets/scripts/db.js"></script>
 <script src="../assets/scripts/queries.js"></script>
 
+<script>
+  const g_noop = function () {};
+  var g_close_modal = g_noop;
+</script>
+
+<script src="../assets/scripts/common.js"></script>
+
 <script src="../assets/scripts/porter/init.js"> // load all transponders into the table </script>
 <script src="../assets/scripts/porter/modal/return.js"> // handle events related to the modal "Transponder zurückgeben". </script>
+<script src="../assets/scripts/porter/modal/lend.js"> // handle events related to the modal "Transponder verleihen" </script>

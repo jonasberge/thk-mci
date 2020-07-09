@@ -24,6 +24,9 @@ const load_transponders = (function () {
       result += ' ' + t.m + ' Minute' + (t.m == 1 ? '' : 'n');
     }
 
+    if (result.length == 0)
+      result = 'Gerade eben';
+
     return result;
   }
 

@@ -12,12 +12,12 @@ SELECT 79, NULL UNION
 SELECT 82, NULL UNION
 SELECT 94, NULL UNION
 SELECT 96, NULL UNION
-SELECT 1,  datetime('now', '-3 hours', '-20 minutes') UNION
-SELECT 2,  datetime('now', '-5 minutes') UNION
-SELECT 50, datetime('now', '-10 minutes') UNION
-SELECT 55, datetime('now', '-20 minutes') UNION
-SELECT 64, datetime('now', '-2 hours', '-10 minutes') UNION
-SELECT 99, datetime('now', '-1 hour', '-15 minutes');
+SELECT 1,  datetime('now', '-3 hours', '-20 minutes', 'localtime') UNION
+SELECT 2,  datetime('now', '-5 minutes', 'localtime') UNION
+SELECT 50, datetime('now', '-10 minutes', 'localtime') UNION
+SELECT 55, datetime('now', '-20 minutes', 'localtime') UNION
+SELECT 64, datetime('now', '-2 hours', '-10 minutes', 'localtime') UNION
+SELECT 99, datetime('now', '-1 hour', '-15 minutes', 'localtime');
 
 INSERT INTO professor (id, name)
 SELECT 1,  "Prof. Dr. Konen" UNION

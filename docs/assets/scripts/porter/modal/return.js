@@ -8,25 +8,34 @@
   const button_transponder_check = document.getElementById('btn_trans_rückgabe_prüfen')
   const button_cancel_rückgabe = document.getElementById('btn_close_trans_abbrechen')
 
-  button_cancel_rückgabe.onclick = function () {
-    modal_transponder_rückgabe.style.display = 'none';
-  };
-
-  button_modal_transponder_rückgabe.onclick = function(){
+  const show_modal = function () {
     modal_transponder_rückgabe.style.display = 'block';
 
     input_element.focus();
     button_close_transponder_rückgabe.disabled='true';
+    g_close_modal = hide_modal;
   };
+
+  const hide_modal = function () {
+    modal_transponder_rückgabe.style.display = 'none';
+    g_close_modal = g_noop;
+    input_element.value = '';
+    reset_modal();
+  };
+
+  button_cancel_rückgabe.onclick = function () {
+    modal_transponder_rückgabe.style.display = 'none';
+  };
+
+  button_modal_transponder_rückgabe.onclick = function () { show_modal(); };
 
   button_close_transponder_rückgabe.onclick = function(){
     modal_transponder_rückgabe.style.display = 'none';
 
-    console.log(selected_transponder_id);
+    // console.log(selected_transponder_id);
 
     // return the transponder.
     if (selected_transponder_id) {
-      console.log(selected_transponder_id);
       execute_db_query(`
 
         UPDATE transponder
@@ -41,8 +50,7 @@
       });
     }
 
-    reset_modal();
-    input_element.value = '';
+    hide_modal();
   };
 
   const input_element = document.querySelector('#input-transponder-number');
@@ -88,8 +96,6 @@
       if (!result || result.length == 0)
         return reset_modal();
 
-      button_close_transponder_rückgabe.disabled='';
-
       transponder = result[0];
       selected_transponder_id = transponder.id;
       console.log(selected_transponder_id, transponder.id);
@@ -118,11 +124,13 @@
         elements.lending_time.innerText = text;
         elements.on_time.innerText = day_difference == 1 ? 'Ja' : 'Nein'; // hardcode
         elements.lender.innerText = 'Alex Brimm'; // hardcode
+        button_close_transponder_rückgabe.disabled = '';
       }
       else {
         elements.lending_time.innerText = '(nicht ausgeliehen)';
         elements.on_time.innerText = '-';
         elements.lender.innerText = '-';
+        button_close_transponder_rückgabe.disabled = 'true';
       }
 
     });
