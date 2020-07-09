@@ -49,3 +49,7 @@ form{
 .italic {
   font-style: italic;
 }
+
+.icon.is-very-small {
+  font-size: .8em;
+}

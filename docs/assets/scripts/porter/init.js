@@ -37,29 +37,37 @@ const load_transponders = (function () {
 </span>
 */
 
-  const create_circle = function () {
+  const create_circle = function (name) {
     const span = document.createElement('span');
     span.classList.add('icon', 'is-small');
     const icon = document.createElement('i');
-    icon.classList.add('fas', 'fa-circle');
+    icon.classList.add('fas', 'fa-' + name);
     span.appendChild(icon);
     return span;
   };
 
-  const create_circle_with_class = function (class_name) {
-    const circle = create_circle();
+  const create_circle_with_class = function (name, class_name) {
+    const circle = create_circle(name);
     circle.classList.add(class_name);
     return circle;
   };
 
   const green_circle = (function () {
-    const circle = create_circle_with_class('has-text-success');
+    const circle = create_circle_with_class('circle', 'has-text-success');
     circle.title = 'Verfügbar';
     return circle.outerHTML;
   })();
 
+  const small_green_circle = (function () {
+    const circle = create_circle_with_class('dot-circle', 'has-text-success');
+    circle.classList.remove('is-small');
+    circle.classList.add('is-very-small');
+    circle.title = 'Teilweise Verfügbar';
+    return circle.outerHTML;
+  })();
+
   const red_circle = (function () {
-    const circle = create_circle_with_class('has-text-danger');
+    const circle = create_circle_with_class('circle', 'has-text-danger');
     circle.title = 'Ausgeliehen';
     return circle.outerHTML;
   })();
@@ -92,7 +100,8 @@ const load_transponders = (function () {
                     END
                   , ', ') as transponder_list,
                   strftime('%s', datetime('now', 'localtime')) - strftime('%s', MIN(transponder.borrow_time)) as diff_seconds,
-                  transponder.borrow_time IS NOT NULL as is_rented
+                  transponder.borrow_time IS NOT NULL as is_rented,
+                  SUM(transponder.borrow_time IS NOT NULL) = COUNT(room.id) as is_all_rented
              FROM room
         LEFT JOIN professor ON room.responsible_professor_id = professor.id
        INNER JOIN room_transponder ON room.id = room_transponder.room_id
@@ -110,11 +119,11 @@ const load_transponders = (function () {
 
           const tr = document.createElement('tr');
           const items = {
+            is_rented: room.is_all_rented ? red_circle : (room.is_rented ? small_green_circle : green_circle),
             room_name: room.room_name,
             responsible_professor: room.responsible_professor,
             transponder_list: room.transponder_list,
-            rental_time: rental_time,
-            is_rented: room.is_rented ? red_circle : green_circle
+            rental_time: rental_time
           }
 
           for (key in items) {
