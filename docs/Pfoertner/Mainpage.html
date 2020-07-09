@@ -189,6 +189,54 @@
         </div>
       </div>
     </div>
+
+    <div>
+      <div class="modal pt-6" id="mdl_trans_rückgabe_bestätigt">
+        <div class="modal-background"></div>
+        <div class="modal-content mt-6">
+          <article class="message is-large is-link">
+            <div class="message-header">
+              <p>Bestätigt</p>
+            </div>
+            <div class="message-body">
+              <section class="container">
+                Der Transponder wurde erfolgreich zurückgegeben.
+                <br><br>
+                <div class="level" id="btn_close_trans_rückgabe">
+                  <button class="button is-link level-item" id="btn_bestätigung_close">OK</button>
+                </div>
+              </section>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      //Modal itself
+      var button_modal_transponder_rückgabe = document.getElementById('btn_trans_rückgabe')
+      var modal_transponder_rückgabe = document.getElementById('mdl_trans_rückgabe')
+      var button_close_transponder_rückgabe = document.getElementById('btn_close_trans_rückgabe')
+      var button_transponder_check = document.getElementById('btn_trans_rückgabe_prüfen')
+      var modal_bestätigung = document.getElementById('mdl_trans_rückgabe_bestätigt')
+      var button_bestätigung_close = document.getElementById('btn_bestätigung_close')
+
+      button_modal_transponder_rückgabe.onclick = function(){
+        modal_transponder_rückgabe.style.display = 'block';
+      }
+      button_close_transponder_rückgabe.onclick = function(){
+        modal_transponder_rückgabe.style.display = 'none';
+        modal_bestätigung.style.display = 'block';
+      }
+
+      button_transponder_check.onclick = function(){
+
+      }
+
+      button_bestätigung_close.onclick = function(){
+        modal_bestätigung.style.display = 'none';
+      }
+    </script>
   </section>
 
   <!--Transponder verleihen-------------------->

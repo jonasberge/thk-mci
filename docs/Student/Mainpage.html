@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+</body>
+</html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -10,7 +13,9 @@
   <body>
 
 <!--nav----------------------------------------------------------------->
-  <nav class="navbar is-primary">
+
+  <nav class="navbar is-primary is-link">
+
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item" href="#" style="font-weight: bold;">
@@ -24,10 +29,15 @@
       </div>
       <div id="navMenu" class="navbar-menu">
         <div class="navbar-end">
+          <a href="#" class="navbar-item is-active">Home</a>
+          <a href="#" class="navbar-item" id="btn_modal_info">Hilfe</a>
+          <!--<a href="#" class="navbar-item"><strong>BE</strong>rechtigungsende</a>-->
+        <!--
           <a href="#" class="navbar-item is-activ">Home</a>
           <a href="#" class="navbar-item">Verleih</a>
           <a href="#" class="navbar-item">Rückgabe</a>
           <a href="#" class="navbar-item"><strong>BE</strong>rechtigungsende</a>
+        -->
           <hr class="navbar-divider">
           <a href="Login.html" class="navbar-item">Logout</a>
         </div>
@@ -45,6 +55,50 @@
       });
     })();
   </script>
+
+
+<section>
+  <div>
+    <div class="modal" id="mdl_verleih_rückgabe">
+      <div class="modal-background"></div>
+      <div class="modal-content" style="margin-top: 5%;">
+        <article class="message is-large is-link">
+          <div class="message-header">
+            <p>Transponder ausleihen und zurückgeben</p>
+          </div>
+          <div class="message-body">
+            <section class="container">
+              <h1 class="title"><strong>Rückgabe:</strong></h1>
+              <p>Transponder können lediglich beim Pförtner ausgeliehen und zurückgegeben werden.<br><br></p>
+              <h1 class="title">Legende:</h1>
+              <p style="font-size: medium;">
+                <strong>Raum</strong>: Raumnummer<br>
+                <strong>Dozent</strong>: Dozent, welcher für diesen Raum verantwortlich ist.<br>
+                <strong>BE</strong>rechtigungsende: An diesem Datum endet ihre Berechtigung, einen Transponder für diesen Raum auszuleihen.<br>
+              </p>
+              <br><br>
+              <div class="level" id="btn_modal_info_close">
+                <button class="button is-link level-item">Verstanden</button>
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var button_modal = document.getElementById('btn_modal_info')
+    var modal = document.getElementById('mdl_verleih_rückgabe')
+    var button_close = document.getElementById('btn_modal_info_close')
+
+    button_modal.onclick = function(){
+      modal.style.display = 'block';
+    }
+    button_close.onclick = function(){
+      modal.style.display = 'none'
+    }
+  </script>
+</section>
 
 <!--List-------------------------------------------------------------->
   <div class="column" >
