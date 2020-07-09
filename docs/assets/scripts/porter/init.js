@@ -30,6 +30,40 @@ const load_transponders = (function () {
     return result;
   }
 
+/*
+
+<span class="icon is-small has-text-success">
+  <i class="fas fa-circle"></i>
+</span>
+*/
+
+  const create_circle = function () {
+    const span = document.createElement('span');
+    span.classList.add('icon', 'is-small');
+    const icon = document.createElement('i');
+    icon.classList.add('fas', 'fa-circle');
+    span.appendChild(icon);
+    return span;
+  };
+
+  const create_circle_with_class = function (class_name) {
+    const circle = create_circle();
+    circle.classList.add(class_name);
+    return circle;
+  };
+
+  const green_circle = (function () {
+    const circle = create_circle_with_class('has-text-success');
+    circle.title = 'Verfügbar';
+    return circle.outerHTML;
+  })();
+
+  const red_circle = (function () {
+    const circle = create_circle_with_class('has-text-danger');
+    circle.title = 'Ausgeliehen';
+    return circle.outerHTML;
+  })();
+
   let last_timeout = null;
 
   return function () {
@@ -80,8 +114,7 @@ const load_transponders = (function () {
             responsible_professor: room.responsible_professor,
             transponder_list: room.transponder_list,
             rental_time: rental_time,
-            is_rented: room.is_rented ? 'Rot' : 'Grün',
-            icon: '<icon>'
+            is_rented: room.is_rented ? red_circle : green_circle
           }
 
           for (key in items) {
@@ -89,6 +122,9 @@ const load_transponders = (function () {
               const td = document.createElement('td');
               td.innerHTML = items[key];
               tr.appendChild(td);
+              if (key == 'is_rented') {
+                td.style.textAlign = 'center';
+              }
               if (key == 'rental_time') {
                 td.dataset.seconds = room.diff_seconds;
                 tds.push(td);
