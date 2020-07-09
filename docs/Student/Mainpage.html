@@ -1,15 +1,69 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/docs/styles.css">
-  <title>Pfoertner Login</title>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Porter Mainpage</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="/docs/styles.css">
+  </head>
+  <body>
 
-<h1>Pförtner Login</h1>
-<a href="Mainpage.html">Login</a>
+<!--nav----------------------------------------------------------------->
+  <nav class="navbar is-primary">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#" style="font-weight: bold;">
+          Trans.ponder
+        </a>
+        <span class="navbar-burger burger" data-target="navMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </div>
+      <div id="navMenu" class="navbar-menu">
+        <div class="navbar-end">
+          <a href="#" class="navbar-item is-activ">Home</a>
+          <a href="#" class="navbar-item">Verleih</a>
+          <a href="#" class="navbar-item">Rückgabe</a>
+          <a href="#" class="navbar-item"><strong>BE</strong>rechtigungsende</a>
+          <hr class="navbar-divider">
+          <a href="Login.html" class="navbar-item">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <script type="text/javascript">
+    (function(){
+      var burger = document.querySelector('.burger');
+      var nav = document.querySelector('#'+burger.dataset.target);
+
+      burger.addEventListener('click', function(){
+        burger.classList.toggle('is-active');
+        nav.classList.toggle('is-active');
+      });
+    })();
+  </script>
+
+<!--List-------------------------------------------------------------->
+  <div class="column" >
+    <div class="table-container">
+      <table class="table is-fullwidth">
+        <thead class="is-primary has-text-weight-bold">
+          <tr>
+            <td>Raum</td><td>Dozent</td><td class="has-text-left">BE</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>0.401</td><td>Konen</td><td>31.08.20</td></tr>
+          <tr><td>0.402</td><td>Konen</td><td>31.08.20</td></tr>
+          <tr><td>Raum</td><td>Dozent</td><td>31.08.20</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
