@@ -166,8 +166,10 @@
                   </div>
                 </div>
                 <br>
-                <div class="level">
-                  <button class="button is-link level-item" id="btn_close_trans_rückgabe">Rückgabe Bestätigen</button>
+                <div class="level" id="btn_close_trans_rückgabe">
+                  <button class="button is-link is-outlined ">Abbrechen</button>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="button is-link level-item">Rückgabe Bestätigen</button>
                 </div>
               </section>
             </div>
@@ -207,7 +209,7 @@
             <div class="message-body">
               <section class="container">
                 <div class="section py-0">
-                  Wählen Sie einen Transponder für den <br>Raum: <strong>0.000</strong> aus der Liste aus.<br>
+                  Geben Sie eine Raumnummer ein und wählen Sie einen Transponder.<br><br>Raum: <input class="input" placeholder="0.000"><br>
                 </div>
                 <section class="section pb-0 pt-4">
                   <div class="columns">
@@ -240,9 +242,9 @@
                     <div class="level">
                       <div class="left-level"></div>
                       <div class="right-level">
-                        <section class="section level-item pb-0 pr-0">
+                        <section class="section level-item pb-0 pr-0" id="btn_close_trans_verleih">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <button class="button is-link is-outlined is-medium" id="btn_close_trans_verleih">Abbrechen</button>
+                          <button class="button is-link is-outlined is-medium">Abbrechen</button>
                           &nbsp;
                           <button class="button is-link is-medium">Bestätigen</button>
                         </section>
