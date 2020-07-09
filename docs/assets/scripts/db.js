@@ -141,6 +141,30 @@ window.addEventListener('beforeunload', function (e) {
 });
 
 
+// -- HELPERS -- //
+
+const with_db = function (decorated) {
+  return function () {
+    return new Promise(function (resolve, reject) {
+      get_db().then(function (db) {
+        resolve(decorated(db));
+      }, reject);
+    });
+  };
+};
+
+const create_callable_db_query = function (query) {
+  return with_db(function (db) {
+    const stmt = db.prepare(query);
+
+    result = [];
+    while (stmt.step())
+      result.push(stmt.getAsObject());
+
+    return result;
+  });
+};
+
 
 // -- DEBUG INFORMATION -- //
 

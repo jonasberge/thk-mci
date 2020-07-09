@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Porter Mainpage</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-    <link rel="stylesheet" href="/docs/styles.css">
+    <link rel="stylesheet" href="../styles.css">
   </head>
   <body>
 
@@ -91,12 +91,12 @@
       <hr class="navbar-divider">
       <ul class="menu-list">
         <li><a class="is-active">Dashboard</a></li>
-        <li><a>Verleih</a></li>
-        <li><a>Rückgabe</a></li>
+        <li id="btn_trans_verleih"><a>Verleih</a></li>
+        <li id="btn_trans_rückgabe"><a>Rückgabe</a></li>
         <li><a class="has-text-grey">Verliehene Transponder
         </a></li>
       </ul>
-      <div> 
+      <div>
         <hr class="navbar-divider">
         <p class="menu-label">
           Sonstige
@@ -104,12 +104,41 @@
         <hr class="navbar-divider">
         <ul class="menu-list">
           <li><a class="has-text-grey">Einstellung</a></li>
-          <li><a href="/docs/Pfoertner/Login.html">Logout</a></li>
+          <li><a href="./Login.html">Logout</a></li>
         </ul>
       </div>
 
     </aside>
   </div>
+
+<!--Modal-scheme------------------------------------------
+  <section>
+    <div>
+      <button class="button is-link is-large" id="button-modal">Link</button>
+
+      <div class="modal" id="page-modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          Hier ist ein PopUp
+        </div>
+        <button class="modal-close is-large" aria-label="close" id="button-close"></button>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var button_modal = document.getElementById('button-modal')
+      var modal = document.getElementById('page-modal')
+      var button_close = document.getElementById('button-close')
+
+      button_modal.onclick = function(){
+        modal.style.display = 'block';
+      }
+      button_close.onclick = function(){
+        modal.style.display = 'none'
+      }
+    </script>
+  </section>
+-->
+
 
     <!--Transponder zurückgeben------------------>
   <section>
@@ -124,7 +153,7 @@
             <div class="message-body">
               <section class="container">
                 <div class="level ">
-                  <p class="level-item"><input class="input is-clipped" type="text" placeholder="Text input"></p>
+                  <p class="level-item"><input class="input is-clipped" type="text" placeholder="Transpondernummer eingeben..."></p>
                   <p class="level-item"><button class="button is-link" id="btn_trans_rückgabe_prüfen">Prüfen</button></p>
                 </div>
                 <br>
@@ -137,8 +166,10 @@
                   </div>
                 </div>
                 <br>
-                <div class="level">
-                  <button class="button is-link level-item" id="btn_close_trans_rückgabe">Rückgabe Bestätigen</button>
+                <div class="level" id="btn_close_trans_rückgabe">
+                  <button class="button is-link is-outlined ">Abbrechen</button>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <button class="button is-link level-item">Rückgabe Bestätigen</button>
                 </div>
               </section>
             </div>
@@ -160,7 +191,7 @@
         modal_transponder_rückgabe.style.display = 'none';
       }
       button_transponder_check.onclick = function(){
-        
+
       }
     </script>
   </section>
@@ -178,7 +209,7 @@
             <div class="message-body">
               <section class="container">
                 <div class="section py-0">
-                  Wählen Sie einen Transponder für den <br>Raum: <strong>0.000</strong> aus der Liste aus.<br>
+                  Geben Sie eine Raumnummer ein und wählen Sie einen Transponder.<br><br>Raum: <input class="input" placeholder="0.000"><br>
                 </div>
                 <section class="section pb-0 pt-4">
                   <div class="columns">
@@ -196,7 +227,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="column is-two-fifth">
                       <div class="level">
                         <button class="button is-link level-item">MultiCa prüfen</button>
@@ -211,9 +242,9 @@
                     <div class="level">
                       <div class="left-level"></div>
                       <div class="right-level">
-                        <section class="section level-item pb-0 pr-0">
+                        <section class="section level-item pb-0 pr-0" id="btn_close_trans_verleih">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <button class="button is-link is-outlined is-medium" id="btn_close_trans_verleih">Abbrechen</button>
+                          <button class="button is-link is-outlined is-medium">Abbrechen</button>
                           &nbsp;
                           <button class="button is-link is-medium">Bestätigen</button>
                         </section>
@@ -246,20 +277,13 @@
   <!--table------------------------------------------------------------------------------>
   <div class="column" >
     <div class="table-container">
-      <table class="table is-hoverable is-fullwidth">
+      <table id="table-transponder" class="table is-hoverable is-fullwidth">
         <thead class="is-primary">
           <tr>
             <td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>Dauer</td><td>Status</td><td>Icon</td>
           </tr>
         </thead>
         <tbody>
-          <tr><td>0.401</td><td>Konen</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>0.402</td><td>Konen</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
-          <tr><td>Raum</td><td>Dozent</td><td>Transponderliste</td><td>00:00</td><td>Status</td><td>Icon</td></tr>
         </tbody>
       </table>
     </div>
@@ -268,7 +292,91 @@
 
 
 
+<script src="../vendor/sql-js/sql-wasm.js"></script>
+<script src="../assets/scripts/util.js"></script>
+<script src="../assets/scripts/db.js"></script>
+<script src="../assets/scripts/queries.js"></script>
+<script>
 
+// populate the table above.
+(function () {
 
+  const table = document.querySelector('#table-transponder');
 
+  const create_td_with = function (value) {
+    const td = document.createElement('td');
+    td.innerText = value;
+    return td;
+  };
 
+  const formatSeconds = function (s) {
+    result = '';
+    if (!s)
+      return result;
+
+    t = secondsToTime(s);
+
+    if (t.h > 0)
+      result += t.h + ' Stunde' + (t.h == 1 ? '' : 'n');
+
+    if (t.m > 0) {
+      if (t.h > 0)
+        result += ' und';
+      result += ' ' + t.m + ' Minute' + (t.m == 1 ? '' : 'n');
+    }
+
+    return result;
+  }
+
+  query_transponders().then(function (result) {
+    tds = [];
+
+    for (room of result) {
+      const rental_time = formatSeconds(room.diff_seconds);
+
+      const tr = document.createElement('tr');
+      const items = {
+        room_name: room.room_name,
+        responsible_professor: room.responsible_professor,
+        transponder_list: room.transponder_list,
+        rental_time: rental_time,
+        is_rented: room.is_rented ? 'Rot' : 'Grün',
+        icon: '<icon>'
+      }
+
+      for (key in items) {
+        if (items.hasOwnProperty(key)) {
+          const td = document.createElement('td');
+          td.innerText = items[key];
+          tr.appendChild(td);
+          if (key == 'rental_time') {
+            td.dataset.seconds = room.diff_seconds;
+            tds.push(td);
+          }
+        }
+      }
+
+      table.appendChild(tr);
+    }
+
+    const timeout_seconds = 1;
+    const timeout_function = function () {
+      for (td of tds) {
+        seconds = parseInt(td.dataset.seconds) + timeout_seconds;
+        td.innerText = formatSeconds(seconds);
+        td.dataset.seconds = seconds;
+      }
+    };
+
+    (function create_timeout() {
+      setTimeout(function () {
+        timeout_function();
+        create_timeout();
+      }, timeout_seconds * 1000);
+    })();
+
+  });
+
+})();
+
+</script>
