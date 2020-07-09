@@ -8,6 +8,7 @@
   const show_modal = function () {
     modal_transponder_verleih.style.display = 'block';
     button_confirm_transponder_verleih.disabled = 'true';
+    button_check_multica.disabled = 'true';
     input_room_number.focus();
     set_options_all_transponders();
 
@@ -16,6 +17,7 @@
 
   const hide_modal = function () {
     modal_transponder_verleih.style.display = 'none';
+    button_check_multica.disabled = 'true';
     reset_scanner_message();
     reset_modal();
     revert_button_loading();
@@ -48,18 +50,37 @@
 
   button_modal_transponder_verleih.onclick = function(){ show_modal(); };
 
+  const reset_scan = function () {
+    clearTimeout(scanner_message_timeout);
+    set_confirm_precondition('scanned_multica', false);
+    revert_button_loading();
+    reset_scanner_message();
+    button_check_multica.disabled = 'true';
+  };
+
   select_transponder_number.addEventListener('change', function (event) {
+    reset_scan();
+
     if (this.value != 0) {
       set_confirm_precondition('selected_transponder', parseInt(this.value));
+      button_check_multica.disabled = '';
       this.classList.remove('grey');
       return;
     }
     this.classList.add('grey');
+    button_check_multica.disabled = 'true';
   });
 
+  let last_input = null;
   input_room_number.addEventListener("keyup", function(event) {
 
+    if (input_room_number.value === last_input)
+      return;
+
+    reset_scan();
+
     const input = input_room_number.value;
+    last_input = input;
     if (input.length == 0) {
       reset_modal();
       set_options_all_transponders();
