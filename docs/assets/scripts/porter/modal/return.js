@@ -27,13 +27,15 @@
     g_close_modal = g_noop;
     input_element.value = '';
     reset_modal();
+
+    select_sidebar_entry();
   };
 
   button_cancel_rückgabe.onclick = function () {
     modal_transponder_rückgabe.style.display = 'none';
   };
 
-  button_modal_transponder_rückgabe.onclick = function () { show_modal(); };
+  button_modal_transponder_rückgabe.addEventListener('click', function () { show_modal(); });
 
   button_close_transponder_rückgabe.onclick = function(){
     modal_transponder_rückgabe.style.display = 'none';

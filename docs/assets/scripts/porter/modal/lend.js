@@ -23,6 +23,8 @@
     revert_button_loading();
     reset_signature();
     g_close_modal = g_noop;
+
+    select_sidebar_entry();
   };
 
   const reset_modal = function () {
@@ -48,7 +50,7 @@
   const signature_icon = document.getElementById('signature-icon');
   const button_signature = document.getElementById('signature-button');
 
-  button_modal_transponder_verleih.onclick = function(){ show_modal(); };
+  button_modal_transponder_verleih.addEventListener('click', function(){ show_modal(); });
 
   const reset_scan = function () {
     clearTimeout(scanner_message_timeout);

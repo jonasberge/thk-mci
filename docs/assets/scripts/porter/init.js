@@ -74,10 +74,12 @@ const load_transponders = (function () {
 
   let last_timeout = null;
 
-  return function () {
+  return function (options) {
 
     if (last_timeout)
       clearTimeout(last_timeout);
+
+    const has_lended_transponders = !!options && options.has_lended_transponders;
 
     return new Promise(function (resolve, reject) {
 
@@ -89,13 +91,17 @@ const load_transponders = (function () {
       const outerHTML = span.outerHTML.replace(/'/g, "''");;
       const [ left_span, right_span ] = outerHTML.split(delimiter);
 
+      const having_clause = `
+        HAVING MIN(transponder.borrow_time) IS NOT NULL
+      `;
+
       return execute_db_query(`
 
            SELECT room.name as room_name,
                   professor.name as responsible_professor,
                   group_concat(
                     CASE WHEN transponder.borrow_time IS NULL
-                      THEN room_transponder.transponder_id
+                      THEN ${ has_lended_transponders ? 'NULL' : 'room_transponder.transponder_id' }
                       ELSE '${ left_span }' || room_transponder.transponder_id || '${ right_span }'
                     END
                   , ', ') as transponder_list,
@@ -107,6 +113,7 @@ const load_transponders = (function () {
        INNER JOIN room_transponder ON room.id = room_transponder.room_id
        INNER JOIN transponder ON room_transponder.transponder_id = transponder.id
          GROUP BY room.id
+                  ${ has_lended_transponders ? having_clause : '' }
 
       `).then(function (result) {
         tds = [];

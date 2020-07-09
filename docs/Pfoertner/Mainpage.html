@@ -91,11 +91,10 @@
       </p>
       <hr class="navbar-divider">
       <ul class="menu-list">
-        <li><a class="is-active">Dashboard</a></li>
+        <li id="btn_trans_dashboard"><a class="is-active">Dashboard</a></li>
         <li id="btn_trans_verleih"><a>Verleih</a></li>
         <li id="btn_trans_rückgabe"><a>Rückgabe</a></li>
-        <li><a id="btn_trans_verliehen">Verliehene Transponder
-        </a></li>
+        <li id="btn_trans_verliehen"><a>Verliehene Transponder</a></li>
       </ul>
       <div>
         <hr class="navbar-divider">
@@ -376,6 +375,18 @@
 <script>
   const g_noop = function () {};
   var g_close_modal = g_noop;
+  var g_last_active = document.querySelector('aside a.is-active');
+
+  const select_sidebar_entry = (function () {
+    let remembered = null;
+    return function (element, remember) {
+      if (remember) remembered = g_last_active;
+      const link = !element ? remembered : element.querySelector('a');
+      g_last_active.classList.remove('is-active');
+      link.classList.add('is-active');
+      g_last_active = link;
+    };
+  })();
 </script>
 
 <script src="../assets/scripts/common.js"></script>
@@ -386,8 +397,23 @@
 
 <script>
 
-  const btn_trans_verliehen = document.querySelector('#btn_trans_verliehen');
+document.getElementById('btn_trans_verleih').addEventListener('click', function (e) {
+  select_sidebar_entry(this, true);
+});
+document.getElementById('btn_trans_rückgabe').addEventListener('click', function (e) {
+  select_sidebar_entry(this, true);
+});
 
+document.querySelector('#btn_trans_dashboard').onclick = function () {
+  select_sidebar_entry(this);
+  load_transponders()
+};
 
+document.querySelector('#btn_trans_verliehen').onclick = function () {
+  select_sidebar_entry(this);
+  load_transponders({
+    has_lended_transponders: true
+  })
+};
 
 </script>
