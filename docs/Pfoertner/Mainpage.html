@@ -153,16 +153,28 @@
             <div class="message-body">
               <section class="container">
                 <div class="level ">
-                  <p class="level-item"><input class="input is-clipped" type="text" placeholder="Transpondernummer eingeben..."></p>
+                  <p class="level-item"><input id="input-transponder-number" class="input is-clipped" type="text" placeholder="Transpondernummer eingeben..."></p>
                   <p class="level-item"><button class="button is-link" id="btn_trans_rückgabe_prüfen">Prüfen</button></p>
                 </div>
                 <br>
-                <div class="level">
+                <div class="level" id="container-lending-info">
                   <div class="level-item">
-                    <p>Raum:<br>Ausleiher:<br>Ausleihdatum:<br>Uhrzeit:<br>Fristgerecht:</p>
+                    <p>
+                      <span class="info-title-room">Raum</span>:<br>
+                      Ausleiher:<br>
+                      Ausleihdatum:<br>
+                      Uhrzeit:<br>
+                      Fristgerecht:
+                    </p>
                   </div>
                   <div class="level-item">
-                    <p>0.401<br>Alex Brimm:<br>TT.MM.YYYY:<br>HH:MM Uhr<br>Ja</p>
+                    <p>
+                      <span class="info-room"></span><br> <!-- 0.401 -->
+                      <span class="info-lender"></span><br> <!-- Alex Brimm -->
+                      <span class="info-lending-time"></span><br> <!-- TT.MM.YYYY -->
+                      <span class="info-current-time"></span><br> <!-- HH:MM Uhr -->
+                      <span class="info-on-time"></span> <!-- Ja -->
+                    </p>
                   </div>
                 </div>
                 <br>
@@ -177,23 +189,6 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript">
-      //Modal itself
-      var button_modal_transponder_rückgabe = document.getElementById('btn_trans_rückgabe')
-      var modal_transponder_rückgabe = document.getElementById('mdl_trans_rückgabe')
-      var button_close_transponder_rückgabe = document.getElementById('btn_close_trans_rückgabe')
-      var button_transponder_check = document.getElementById('btn_trans_rückgabe_prüfen')
-
-      button_modal_transponder_rückgabe.onclick = function(){
-        modal_transponder_rückgabe.style.display = 'block';
-      }
-      button_close_transponder_rückgabe.onclick = function(){
-        modal_transponder_rückgabe.style.display = 'none';
-      }
-      button_transponder_check.onclick = function(){
-
-      }
-    </script>
   </section>
 
   <!--Transponder verleihen-------------------->
@@ -296,10 +291,9 @@
 <script src="../assets/scripts/util.js"></script>
 <script src="../assets/scripts/db.js"></script>
 <script src="../assets/scripts/queries.js"></script>
-<script>
+<script> // load all transponders into the table
 
-// populate the table above.
-(function () {
+const load_transponders = (function () {
 
   const table = document.querySelector('#table-transponder');
 
@@ -325,57 +319,232 @@
       result += ' ' + t.m + ' Minute' + (t.m == 1 ? '' : 'n');
     }
 
+    result += t.s;
+
     return result;
   }
 
-  query_transponders().then(function (result) {
-    tds = [];
+  let last_timeout = null;
 
-    for (room of result) {
-      const rental_time = formatSeconds(room.diff_seconds);
+  return function () {
 
-      const tr = document.createElement('tr');
-      const items = {
-        room_name: room.room_name,
-        responsible_professor: room.responsible_professor,
-        transponder_list: room.transponder_list,
-        rental_time: rental_time,
-        is_rented: room.is_rented ? 'Rot' : 'Grün',
-        icon: '<icon>'
-      }
+    if (last_timeout)
+      clearTimeout(last_timeout);
 
-      for (key in items) {
-        if (items.hasOwnProperty(key)) {
-          const td = document.createElement('td');
-          td.innerText = items[key];
-          tr.appendChild(td);
-          if (key == 'rental_time') {
-            td.dataset.seconds = room.diff_seconds;
-            tds.push(td);
+    return new Promise(function (resolve, reject) {
+
+      return query_transponders().then(function (result) {
+        tds = [];
+
+        while (table.firstChild)
+          table.removeChild(table.firstChild);
+
+        for (room of result) {
+          const rental_time = formatSeconds(room.diff_seconds);
+
+          const tr = document.createElement('tr');
+          const items = {
+            room_name: room.room_name,
+            responsible_professor: room.responsible_professor,
+            transponder_list: room.transponder_list,
+            rental_time: rental_time,
+            is_rented: room.is_rented ? 'Rot' : 'Grün',
+            icon: '<icon>'
           }
-        }
-      }
 
-      table.appendChild(tr);
+          for (key in items) {
+            if (items.hasOwnProperty(key)) {
+              const td = document.createElement('td');
+              td.innerText = items[key];
+              tr.appendChild(td);
+              if (key == 'rental_time') {
+                td.dataset.seconds = room.diff_seconds;
+                tds.push(td);
+              }
+            }
+          }
+
+          table.appendChild(tr);
+        }
+
+        const timeout_seconds = 1;
+        const timeout_function = function () {
+          for (td of tds) {
+            seconds = parseInt(td.dataset.seconds) + timeout_seconds;
+            td.innerText = formatSeconds(seconds);
+            td.dataset.seconds = seconds;
+          }
+        };
+
+        (function create_timeout() {
+          last_timeout = setTimeout(function () {
+            timeout_function();
+            create_timeout();
+          }, timeout_seconds * 1000);
+        })();
+
+        resolve();
+
+      }, reject);
+
+    });
+
+  };
+
+})();
+
+const load_transponders_errorFunc = function (reason) {
+  console.error('Could not load transponders', reason);
+};
+
+load_transponders().then(function () {}, load_transponders_errorFunc);
+
+</script>
+
+
+<script> // handle events related to the modal "Transponder zurückgeben".
+
+(function () {
+
+  let selected_transponder_id = null;
+
+  const button_modal_transponder_rückgabe = document.getElementById('btn_trans_rückgabe')
+  const modal_transponder_rückgabe = document.getElementById('mdl_trans_rückgabe')
+  const button_close_transponder_rückgabe = document.getElementById('btn_close_trans_rückgabe')
+  const button_transponder_check = document.getElementById('btn_trans_rückgabe_prüfen')
+
+  button_modal_transponder_rückgabe.onclick = function(){
+    modal_transponder_rückgabe.style.display = 'block';
+
+    input_element.focus();
+  };
+
+  button_close_transponder_rückgabe.onclick = function(){
+    modal_transponder_rückgabe.style.display = 'none';
+
+    console.log(selected_transponder_id);
+
+    // return the transponder.
+    if (selected_transponder_id) {
+      console.log(selected_transponder_id);
+      execute_db_query(`
+
+        UPDATE transponder
+        SET borrow_time = NULL
+        WHERE id = ?
+
+      `, [ selected_transponder_id ]).then(function (result) {
+        console.log('test-result:', result);
+        // TODO: open a modal that informs the user about the operation being successful.
+        load_transponders().then(function () {
+          console.log('Transponders reloaded');
+        }, load_transponders_errorFunc);
+      }, function (reason) {
+        console.error('Could not return transponder', reason);
+      });
     }
 
-    const timeout_seconds = 1;
-    const timeout_function = function () {
-      for (td of tds) {
-        seconds = parseInt(td.dataset.seconds) + timeout_seconds;
-        td.innerText = formatSeconds(seconds);
-        td.dataset.seconds = seconds;
-      }
-    };
+    reset_modal();
+    input_element.value = '';
+  };
 
-    (function create_timeout() {
-      setTimeout(function () {
-        timeout_function();
-        create_timeout();
-      }, timeout_seconds * 1000);
-    })();
+  const input_element = document.querySelector('#input-transponder-number');
+  const result_container = document.querySelector('#container-lending-info');
+  const room_title = result_container.querySelector('.info-title-room');
+  const elements = {
+    room: result_container.querySelector('.info-room'),
+    lender: result_container.querySelector('.info-lender'),
+    lending_time: result_container.querySelector('.info-lending-time'),
+    current_time: result_container.querySelector('.info-current-time'),
+    on_time: result_container.querySelector('.info-on-time')
+  };
 
+  // submit input field on typing
+  input_element.addEventListener("keyup", function(event) {
+    if (input_element.value.length == 0)
+      reset_modal();
+    else button_transponder_check.click();
   });
+
+  // load the data of the transponder.
+  button_transponder_check.onclick = function(){
+
+    const input = input_element.value;
+    if (input.length == 0) return;
+
+    const transponder_id = convert_input_to_transponder_id(input);
+
+    execute_db_query(`
+
+       SELECT transponder.id,
+              transponder.borrow_time,
+              GROUP_CONCAT(room.name, ', ') as room_name,
+              COUNT(room.id) as room_count
+         FROM transponder
+   INNER JOIN room_transponder ON transponder.id = room_transponder.transponder_id
+   INNER JOIN room ON room_transponder.room_id = room.id
+        WHERE transponder.id = ?
+     GROUP BY transponder.id
+
+    `, [ transponder_id ]).then(function (result) {
+
+      if (!result || result.length == 0)
+        return reset_modal();
+
+      transponder = result[0];
+      selected_transponder_id = transponder.id;
+      console.log(selected_transponder_id, transponder.id);
+
+      if (transponder.room_count > 1)
+        room_title.innerText = 'Räume';
+      else room_title.innerText = 'Raum';
+
+      elements.room.innerText = transponder.room_name;
+      elements.current_time.innerText = format_time(new Date());
+
+      if (transponder.borrow_time) {
+        const borrowed_at = new Date(transponder.borrow_time);
+        const borrow_date = borrowed_at.toLocaleDateString();
+        const borrow_time = format_time(borrowed_at);
+
+        const one_day = 24 * 60 * 60 * 1000;
+        const day_difference = Math.round(Math.abs((new Date() - borrowed_at) / one_day))
+
+        let text = borrow_time + ' am ' + borrow_date;
+        if (day_difference == 1)
+          text = 'Gestern um ' + borrow_time;
+        else if (day_difference == 2)
+          text = 'Vorgestern um ' + borrow_time;
+
+        elements.lending_time.innerText = text;
+        elements.on_time.innerText = day_difference == 1 ? 'Ja' : 'Nein'; // hardcode
+        elements.lender.innerText = 'Alex Brimm'; // hardcode
+      }
+      else {
+        elements.lending_time.innerText = '(nicht ausgeliehen)';
+        elements.on_time.innerText = '-';
+        elements.lender.innerText = '-';
+      }
+
+    });
+
+  };
+
+  const convert_input_to_transponder_id = function (input) {
+    return parseInt(input.replace(/[\.,]+/g, ''));
+  };
+
+  const reset_modal = function () {
+    for (key in elements)
+      if (elements.hasOwnProperty(key))
+        elements[key].innerText = '';
+    selected_transponder_id = null;
+    room_title.innerText = 'Raum';
+  };
+
+  const format_time = function (date) {
+    return date.getHours() + ':' + date.getMinutes() + ' Uhr';
+  };
 
 })();
 

@@ -153,9 +153,10 @@ const with_db = function (decorated) {
   };
 };
 
-const create_callable_db_query = function (query) {
+const create_callable_db_query = function (query, values) {
   return with_db(function (db) {
     const stmt = db.prepare(query);
+    stmt.bind(values);
 
     result = [];
     while (stmt.step())
@@ -163,6 +164,10 @@ const create_callable_db_query = function (query) {
 
     return result;
   });
+};
+
+const execute_db_query = function (query, values) {
+  return create_callable_db_query(query, values)();
 };
 
 
