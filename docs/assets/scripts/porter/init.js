@@ -1,4 +1,15 @@
-const load_transponders = (function () {
+const clear_transponders = (function () {
+
+  const table = document.querySelector('#table-transponder');
+
+  return function () {
+    while (table.firstChild)
+      table.removeChild(table.firstChild);
+  };
+
+})();
+
+const insert_transponders = (function () {
 
   const table = document.querySelector('#table-transponder');
 
@@ -29,13 +40,6 @@ const load_transponders = (function () {
 
     return result;
   }
-
-/*
-
-<span class="icon is-small has-text-success">
-  <i class="fas fa-circle"></i>
-</span>
-*/
 
   const create_circle = function (name) {
     const span = document.createElement('span');
@@ -74,10 +78,64 @@ const load_transponders = (function () {
 
   let last_timeout = null;
 
-  return function (options) {
+  return function (rooms) {
 
-    if (last_timeout)
-      clearTimeout(last_timeout);
+    tds = [];
+
+    for (room of rooms) {
+      const rental_time = formatSeconds(room.diff_seconds);
+
+      const tr = document.createElement('tr');
+      const items = {
+        is_rented: room.is_all_rented ? red_circle : (room.is_rented ? small_green_circle : green_circle),
+        room_name: room.room_name,
+        responsible_professor: room.responsible_professor,
+        transponder_list: room.transponder_list,
+        rental_time: rental_time
+      }
+
+      for (key in items) {
+        if (items.hasOwnProperty(key)) {
+          const td = document.createElement('td');
+          td.innerHTML = items[key];
+          tr.appendChild(td);
+          if (key == 'is_rented') {
+            td.style.textAlign = 'center';
+          }
+          if (key == 'rental_time') {
+            td.dataset.seconds = room.diff_seconds;
+            tds.push(td);
+          }
+        }
+      }
+
+      table.appendChild(tr);
+    }
+
+    const timeout_seconds = 1;
+    const timeout_function = function () {
+      for (td of tds) {
+        seconds = parseInt(td.dataset.seconds) + timeout_seconds;
+        td.innerText = formatSeconds(seconds);
+        td.dataset.seconds = seconds;
+      }
+    };
+
+    clearTimeout(last_timeout);
+    (function create_timeout() {
+      last_timeout = setTimeout(function () {
+        timeout_function();
+        create_timeout();
+      }, timeout_seconds * 1000);
+    })();
+
+  };
+
+})();
+
+const load_transponders = (function () {
+
+  return function (options) {
 
     const has_lended_transponders = !!options && options.has_lended_transponders;
 
@@ -116,57 +174,9 @@ const load_transponders = (function () {
                   ${ has_lended_transponders ? having_clause : '' }
 
       `).then(function (result) {
-        tds = [];
 
-        while (table.firstChild)
-          table.removeChild(table.firstChild);
-
-        for (room of result) {
-          const rental_time = formatSeconds(room.diff_seconds);
-
-          const tr = document.createElement('tr');
-          const items = {
-            is_rented: room.is_all_rented ? red_circle : (room.is_rented ? small_green_circle : green_circle),
-            room_name: room.room_name,
-            responsible_professor: room.responsible_professor,
-            transponder_list: room.transponder_list,
-            rental_time: rental_time
-          }
-
-          for (key in items) {
-            if (items.hasOwnProperty(key)) {
-              const td = document.createElement('td');
-              td.innerHTML = items[key];
-              tr.appendChild(td);
-              if (key == 'is_rented') {
-                td.style.textAlign = 'center';
-              }
-              if (key == 'rental_time') {
-                td.dataset.seconds = room.diff_seconds;
-                tds.push(td);
-              }
-            }
-          }
-
-          table.appendChild(tr);
-        }
-
-        const timeout_seconds = 1;
-        const timeout_function = function () {
-          for (td of tds) {
-            seconds = parseInt(td.dataset.seconds) + timeout_seconds;
-            td.innerText = formatSeconds(seconds);
-            td.dataset.seconds = seconds;
-          }
-        };
-
-        (function create_timeout() {
-          last_timeout = setTimeout(function () {
-            timeout_function();
-            create_timeout();
-          }, timeout_seconds * 1000);
-        })();
-
+        clear_transponders();
+        insert_transponders(result);
         resolve();
 
       }, reject);
