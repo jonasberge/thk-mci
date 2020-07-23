@@ -410,6 +410,7 @@ document.querySelector('#btn_trans_dashboard').onclick = function () {
   select_sidebar_entry(this);
   load_transponders();
   g_has_lended_transponders = false;
+  document.getElementById('input-search').value = '';
 };
 
 document.querySelector('#btn_trans_verliehen').onclick = function () {
@@ -418,6 +419,7 @@ document.querySelector('#btn_trans_verliehen').onclick = function () {
     has_lended_transponders: true
   })
   g_has_lended_transponders = true;
+  document.getElementById('input-search').value = '';
 };
 
 </script>
