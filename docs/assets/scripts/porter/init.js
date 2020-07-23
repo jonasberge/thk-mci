@@ -138,6 +138,7 @@ const load_transponders = (function () {
   return function (options) {
 
     const has_lended_transponders = !!options && options.has_lended_transponders;
+    const query = !!options && options.query;
 
     return new Promise(function (resolve, reject) {
 
@@ -151,6 +152,16 @@ const load_transponders = (function () {
 
       const having_clause = `
         HAVING MIN(transponder.borrow_time) IS NOT NULL
+      `;
+
+      const query_clause = `
+
+        ${ has_lended_transponders ? 'AND ' : 'HAVING ' }
+         ( LOWER(REPLACE(room_name, '.', '')) LIKE '%' || :input || '%'
+        OR LOWER(room_name) LIKE '%' || :input || '%'
+        OR LOWER(transponder_list) LIKE '%' || :input || '%'
+        OR LOWER(professor.name) LIKE '%' || :input || '%' );
+
       `;
 
       return execute_db_query(`
@@ -172,8 +183,9 @@ const load_transponders = (function () {
        INNER JOIN transponder ON room_transponder.transponder_id = transponder.id
          GROUP BY room.id
                   ${ has_lended_transponders ? having_clause : '' }
+                  ${ query ? query_clause : '' }
 
-      `).then(function (result) {
+      `, query ? { ':input': query } : undefined).then(function (result) {
 
         clear_transponders();
         insert_transponders(result);

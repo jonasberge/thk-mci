@@ -30,10 +30,10 @@
             <div class="level-item">
               <div class="field has-addons">
                 <p class="control">
-                  <input class="input" type="text" placeholder="Suche">
+                  <input id="input-search" class="input" type="text" placeholder="Suche">
                 </p>
                 <p class="control">
-                  <button class="button">
+                  <button id="button-search" class="button">
                     Suchen
                   </button>
                 </p>
@@ -376,6 +376,7 @@
   const g_noop = function () {};
   var g_close_modal = g_noop;
   var g_last_active = document.querySelector('aside a.is-active');
+  var g_has_lended_transponders = false;
 
   const select_sidebar_entry = (function () {
     let remembered = null;
@@ -392,6 +393,7 @@
 <script src="../assets/scripts/common.js"></script>
 
 <script src="../assets/scripts/porter/init.js"> // load all transponders into the table </script>
+<script src="../assets/scripts/porter/search.js"> // search functionality </script>
 <script src="../assets/scripts/porter/modal/return.js"> // handle events related to the modal "Transponder zurückgeben". </script>
 <script src="../assets/scripts/porter/modal/lend.js"> // handle events related to the modal "Transponder verleihen" </script>
 
@@ -406,7 +408,8 @@ document.getElementById('btn_trans_rückgabe').addEventListener('click', functio
 
 document.querySelector('#btn_trans_dashboard').onclick = function () {
   select_sidebar_entry(this);
-  load_transponders()
+  load_transponders();
+  g_has_lended_transponders = false;
 };
 
 document.querySelector('#btn_trans_verliehen').onclick = function () {
@@ -414,6 +417,7 @@ document.querySelector('#btn_trans_verliehen').onclick = function () {
   load_transponders({
     has_lended_transponders: true
   })
+  g_has_lended_transponders = true;
 };
 
 </script>
