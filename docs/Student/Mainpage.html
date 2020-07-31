@@ -30,12 +30,11 @@
       <div id="navMenu" class="navbar-menu">
         <div class="navbar-end">
           <a href="#" class="navbar-item is-active">Home</a>
-          <a href="#" class="navbar-item" id="btn_modal_info">Hilfe</a>
-          <!--<a href="#" class="navbar-item"><strong>BE</strong>rechtigungsende</a>-->
+          <a href="#" class="navbar-item" id="btn_modal_verleih_rückgabe">Ausleihe/Rückgabe</a>
+          <a href="#" class="navbar-item" id="btn_modal_info">Legende</a>
         <!--
           <a href="#" class="navbar-item is-activ">Home</a>
-          <a href="#" class="navbar-item">Verleih</a>
-          <a href="#" class="navbar-item">Rückgabe</a>
+          
           <a href="#" class="navbar-item"><strong>BE</strong>rechtigungsende</a>
         -->
           <hr class="navbar-divider">
@@ -56,7 +55,7 @@
     })();
   </script>
 
-
+<!--Verleih/Rückgabe-->
 <section>
   <div>
     <div class="modal" id="mdl_verleih_rückgabe">
@@ -72,6 +71,42 @@
               <p style="font-size: medium;">Transponder können beim Pförtner ausgeliehen werden. Bitte nennen Sie ihm hierzu den Raum und überreichen Sie Ihre Multicard oder weisen sie sich mit Personalausweis aus.<br><br></p>
               <h3 class="title"><strong>Rückgabe:</strong></h3>
               <p style="font-size: medium;">Transponder können beim Pförtner zurückgegeben werden. Sollte der Pförtner nicht anzutreffen sein können sie den Transponder auch in den Rückgabebriefkasten neben der Eingangstür zum Pförtnerbüro einwerfen.<br><br></p>
+              <br>
+              <div class="level" id="btn_modal_verleih_rückgabe_close">
+                <button class="button is-link level-item">OK</button>
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var button_modal_verleih_rückgabe = document.getElementById('btn_modal_verleih_rückgabe')
+    var modal_verleih_rückgabe = document.getElementById('mdl_verleih_rückgabe')
+    var button_verleih_rückgabe_close = document.getElementById('btn_modal_verleih_rückgabe_close')
+
+    button_modal_verleih_rückgabe.onclick = function(){
+      modal_verleih_rückgabe.style.display = 'block';
+    }
+    button_verleih_rückgabe_close.onclick = function(){
+      modal_verleih_rückgabe.style.display = 'none'
+    }
+  </script>
+</section>
+
+<!--Legende-->
+<section>
+  <div>
+    <div class="modal" id="mdl_legende">
+      <div class="modal-background"></div>
+      <div class="modal-content" style="margin-top: 5%;">
+        <article class="message is-large is-link">
+          <div class="message-header">
+            <p>Legende</p>
+          </div>
+          <div class="message-body">
+            <section class="container">
               <h3 class="title">Legende:</h3>
               <p style="font-size: medium;">
                 <strong>Raum:</strong> Raumnummer<br>
@@ -91,7 +126,7 @@
   </div>
   <script type="text/javascript">
     var button_modal = document.getElementById('btn_modal_info')
-    var modal = document.getElementById('mdl_verleih_rückgabe')
+    var modal = document.getElementById('mdl_legende')
     var button_close = document.getElementById('btn_modal_info_close')
 
     button_modal.onclick = function(){
