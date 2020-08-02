@@ -119,7 +119,8 @@
   scanner_message_timeout = null;
   button_confirm_preconditions = {
     scanned_multica: false,
-    selected_transponder: false
+    selected_transponder: false,
+    signature_received: false
   };
 
   const set_confirm_precondition = function (key, value) {
@@ -150,7 +151,10 @@
     }, 400 + Math.floor(Math.random() * 800));
   };
 
-  button_signature.onclick = function () { confirm_signature(); };
+  button_signature.onclick = function () {
+    confirm_signature();
+    set_confirm_precondition('signature_received', true);
+  };
 
   button_close_transponder_verleih.onclick = function(){
     hide_modal();
